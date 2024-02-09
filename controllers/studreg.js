@@ -21,4 +21,32 @@ router.post("/signup",async(req,res)=>{
         status:"success"
     })
 })
+
+router.post("/login",async(req,res)=>{
+    let data=req.body
+    let email=req.body.email
+    let input=await regmodel.findOne({"email":email})
+    if(!input)
+    {
+        return res.json({
+            status:"invalid email"
+        })
+    }
+    else{
+        let dbpass=input.password
+        let oripass=data.password
+        const match = await bcrypt.compare(oripass,dbpass)
+        if(!match)
+        {
+            return res.json({
+                status:"invalid password"
+            })
+        }
+        else{
+            return res.json({
+                status:"succesful"
+            })
+        }
+    }
+})
 module.exports=router
