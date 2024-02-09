@@ -9,4 +9,10 @@ router.post("/add",async(req,res)=>{
         status:"Success"
     })
 })
+router.get("/viewall",async(req,res)=>{
+    let data=await resumeMdel.find()
+    .populate("userId","name age phoneNumber email -_id ")
+    .exec()
+    res.json(data)
+})
 module.exports=router
